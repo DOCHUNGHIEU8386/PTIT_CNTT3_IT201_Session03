@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-int tinhTongCheoChinh(int arr[1000][1000], int n) {
+int tinhTongCheoChinh(int **arr, int n) {
     int tong = 0;
     for (int i = 0; i < n; i++) {
         tong += arr[i][i];
@@ -8,7 +9,7 @@ int tinhTongCheoChinh(int arr[1000][1000], int n) {
     return tong;
 }
 
-int tinhTongCheoPhu(int arr[1000][1000], int n) {
+int tinhTongCheoPhu(int **arr, int n) {
     int tong = 0;
     for (int i = 0; i < n; i++) {
         tong += arr[i][n - 1 - i];
@@ -18,7 +19,7 @@ int tinhTongCheoPhu(int arr[1000][1000], int n) {
 
 int main() {
     int rows, cols;
-    int arr[1000][1000];
+    int **arr;
 
     printf("Nhap so hang: ");
     scanf("%d", &rows);
@@ -38,6 +39,20 @@ int main() {
         return 0;
     }
 
+    arr = (int **)malloc(rows * sizeof(int *));
+    if (arr == NULL) {
+        printf("Khong the cap phat bo nho\n");
+        return 1;
+    }
+
+    for (int i = 0; i < rows; i++) {
+        arr[i] = (int *)malloc(cols * sizeof(int));
+        if (arr[i] == NULL) {
+            printf("Khong the cap phat dong %d\n", i);
+            return 1;
+        }
+    }
+
     printf("Nhap cac phan tu cua mang:\n");
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -54,6 +69,11 @@ int main() {
         printf("Khong ton tai duong cheo chinh\n");
         printf("Khong ton tai duong cheo phu\n");
     }
+
+    for (int i = 0; i < rows; i++) {
+        free(arr[i]);
+    }
+    free(arr);
 
     return 0;
 }
